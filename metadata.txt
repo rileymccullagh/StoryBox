@@ -1,29 +1,32 @@
 {
-  "title": "Katie Morag",
-  "author": "Mairi Hedderwick",
-  "reader": "Tom & Anne",
-  "filename": "morag.wav"
-}
-{
-  "title": "The Wind in the Willows",
-  "author": "Kenneth Grahame",
-  "reader": "Cousin Riley",
-  "filename": "willows.wav"
-}
-{
-  "title": "Winnie the Pooh",
-  "author": "AA Milne",
-  "reader": "Cousin Riley",
-  "filename": "pooh.wav"
-}
-{
-  "title": "The Cat in the Hat",
-  "author": "Dr Seuss",
-  "reader": "Cousin Marlowe",
-  "filename": "seuss.wav"
-{
-  "title": "Hairy MacLary",
-  "author": "Lyndley Dodd",
-  "reader": "Auntie Cassie",
-  "filename": "maclary.wav"
+  {
+    "title": "Katie Morag",
+    "author": "Mairi Hedderwick",
+    "reader": "Tom & Anne",
+    "filename": "morag.wav"
+  },
+  {
+    "title": "The Wind in the Willows",
+    "author": "Kenneth Grahame",
+    "reader": "Cousin Riley",
+    "filename": "willows.wav"
+  },
+  {
+    "title": "Winnie the Pooh",
+    "author": "AA Milne",
+    "reader": "Cousin Riley",
+    "filename": "pooh.wav"
+  },
+  {
+    "title": "The Cat in the Hat",
+    "author": "Dr Seuss",
+    "reader": "Cousin Marlowe",
+    "filename": "seuss.wav"
+  },
+  {
+    "title": "Hairy MacLary",
+    "author": "Lyndley Dodd",
+    "reader": "Auntie Cassie",
+    "filename": "maclary.wav"
+  }
 }
