@@ -5,7 +5,7 @@
 
 // DATA TYPES
 enum mode
-{ 
+{
   idle, play, pause
 };
 
@@ -75,17 +75,17 @@ void setup()
 }
 
 void loop()
-{  
+{
   playButton.update(); // call these every loop to update switch state
-  stopButton.update(); 
-  
+  stopButton.update();
+
   if (playButton.isChanged() && playButton.isDown()) { // debounced switch changed state Up or Down
     playPauseButtonPressed();
   }
   if (stopButton.isChanged() && stopButton.isDown()) {
     stopButtonPressed();
   }
-  
+
   // flash the pause LED
   if(currentMode == pause)
   {
@@ -160,4 +160,3 @@ void displayStory()
   lcd.print(stories[currentStoryIndex].reader);
 
 }
-
