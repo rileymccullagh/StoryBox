@@ -1,3 +1,4 @@
+#include <EasyTransfer.h>
 #include <DebouncedSwitch.h>
 #include <LiquidCrystal.h>
 #include <Encoder.h>
@@ -5,7 +6,7 @@
 
 // DATA TYPES
 enum mode
-{
+{ 
   idle, play, pause
 };
 
@@ -31,12 +32,14 @@ const byte DB6 = 11;     // LCD data
 const byte DB7 = 12;     // LCD data
 
 // HARDWARE LIBRARIES
-DebouncedSwitch playButton(PLAYBTN); // Debouncer Library
-DebouncedSwitch stopButton(STOPBTN); // Debouncer Library
+DebouncedSwitch playButton(PLAYBTN);           // Debouncer Library
+DebouncedSwitch stopButton(STOPBTN);           // Debouncer Library
 
 LiquidCrystal lcd(RS, EN, DB4, DB5, DB6, DB7); // LCD
 
-Encoder knob(3,2); // Rotary encoder
+Encoder knob(3,2);                             // Rotary encoder
+
+EasyTransfer ET;                               // transfer between UIController and SoundController
 
 // GLOBALS
 mode currentMode = idle; // global machine mode
@@ -75,17 +78,17 @@ void setup()
 }
 
 void loop()
-{
+{  
   playButton.update(); // call these every loop to update switch state
-  stopButton.update();
-
+  stopButton.update(); 
+  
   if (playButton.isChanged() && playButton.isDown()) { // debounced switch changed state Up or Down
     playPauseButtonPressed();
   }
   if (stopButton.isChanged() && stopButton.isDown()) {
     stopButtonPressed();
   }
-
+  
   // flash the pause LED
   if(currentMode == pause)
   {
@@ -160,3 +163,4 @@ void displayStory()
   lcd.print(stories[currentStoryIndex].reader);
 
 }
+
