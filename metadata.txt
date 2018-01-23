@@ -1,32 +1,16 @@
-{
-  {
-    "title": "Katie Morag",
-    "author": "Mairi Hedderwick",
-    "reader": "Tom & Anne",
-    "filename": "morag.wav"
-  },
-  {
-    "title": "The Wind in the Willows",
-    "author": "Kenneth Grahame",
-    "reader": "Cousin Riley",
-    "filename": "willows.wav"
-  },
-  {
-    "title": "Winnie the Pooh",
-    "author": "AA Milne",
-    "reader": "Cousin Riley",
-    "filename": "pooh.wav"
-  },
-  {
-    "title": "The Cat in the Hat",
-    "author": "Dr Seuss",
-    "reader": "Cousin Marlowe",
-    "filename": "seuss.wav"
-  },
-  {
-    "title": "Hairy MacLary",
-    "author": "Lyndley Dodd",
-    "reader": "Auntie Cassie",
-    "filename": "maclary.wav"
-  }
-}
+# This file contains the metadata for story recordings on the SD card
+#
+# Use the following format:
+# Title, Author, Reader, Filename
+#
+# Values have the following maximum lengths:
+# Title = 20
+# Author = 20
+# Reader = 20
+# Filename = 12 (that is, 8.3: ""********.wav")
+#
+Katie Morag,Mairi Hedderwick,Tom & Anne,morag.wav
+Wind in the Willows,Kenneth Grahame,Cousin Riley,willows.wav
+Winnie the Pooh,AA Milne,Cousin Riley,pooh.wav
+The Cat in the Hat,Dr Seuss,Cousin Marlowe,seuss.wav
+Hairy MacLary,Lyndley Dodd,Auntie Cassie,maclary.wav

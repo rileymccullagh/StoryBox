@@ -10,6 +10,16 @@
 #define SDCARD_MOSI_PIN  7
 #define SDCARD_SCK_PIN   14
 
+// global settings
+#define MAX_STORIES      20
+
+struct STORY {
+  char title[20];
+  char author[20];
+  char reader[20];
+  char filename[13];
+};
+
 // EasyTransfer data structures
 struct RECIEVE {
   byte action;
@@ -24,9 +34,9 @@ AudioControlSGTL5000     sgtl5000_1;
 
 EasyTransfer             ET;
 
-File metadata;
-
 RECIEVE command;
+
+STORY stories[MAX_STORIES];
 
 
 void setup() {
@@ -39,27 +49,40 @@ void setup() {
 
   // check if SD works
   if (!(SD.begin(SDCARD_CS_PIN))) {
-    while (1) {
-      error("No SD Card!");
-    }
+    error("No SD Card!");
   }
 
   // open the metadata on the file
-  metadata = SD.open("metadata.txt");
-  if (metadata) {
-    Serial.println("metadata.txt:");
-    
-    // read from the file until there's nothing else in it:
-    while (metadata.available()) {
-      Serial.write(metadata.read());
+  File file = SD.open("metadata.txt");
+
+  //read each line
+  if (file) {
+    int index = 0;
+    char line[100];
+    while(file.available() && index < 20){
+      readLine(&file, line);
+      if(line[0] != '#'){
+        parseLine(line, &stories[index]);
+        index++;
+      }
+      memset(line,'\0',sizeof(line));
     }
+    
     // close the file:
-    metadata.close();
+    file.close();
   } else {
     while (1) {
-      error("No metadata!");
+      error("No metadata file!");
     }
   }
+
+  for(int i = 0; i<20; i++) {
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.print(stories[i].title);
+  }
+
+
 
   // start audio
   AudioMemory(8);
@@ -78,10 +101,52 @@ void setup() {
 void loop() {
 }
 
-void error(char error[]) {
-  Serial.println(error);
+void readLine(File* file, char* line) {
+  bool EOL = false;
+  char buff;
+  int index = 0;
+  while(!EOL && file->available() && index < 100){
+    buff = file->read();
+    if(buff != '\n') {
+      line[index] = buff;
+    } else {
+      EOL = true;
+    }
+    index++;
+  }
 }
 
+void parseLine(char *line, STORY *story){
+  Serial.println("parsing line");
+  //char elements[4][20];
+  //int elementsIndex = 0;
+  int buffIndex = 0;
+  char buff[20] = "";
+  char elements[4][20];
+  int elementsIndex = 0;
+  
+  for(int lineIndex = 0; lineIndex<100; lineIndex++) {
+    if(line[lineIndex] == ','){
+      Serial.println("Element:");
+      Serial.println(buff);
+      strncpy(elements[elementsIndex], buff, 20);
+      memset(buff,'\0',sizeof(buff));
+      buffIndex = 0;
+      elementsIndex++;
+    } else {
+      if(buffIndex < 20){
+        buff[buffIndex] = line[lineIndex];
+        buffIndex++;
+      }
+    }
+  }
+  strncpy(story->title, elements[0], 20);
+  strncpy(story->author, elements[1], 20);
+  strncpy(story->reader, elements[2], 20);
+  strncpy(story->filename, elements[3], 13);
+}
 
-
-
+void error(String error) {
+  Serial.println(error);
+  while(1){}
+}
