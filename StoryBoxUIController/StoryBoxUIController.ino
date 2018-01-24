@@ -10,11 +10,16 @@ enum mode
   idle, play, pause
 };
 
-struct story
+struct STORY
 {
   char title[20];
   char author[20];
   char reader[20];
+};
+
+// EasyTransfer data structures
+struct SEND {
+  char action;
 };
 
 // PIN DEFINITIONS
@@ -43,13 +48,12 @@ EasyTransfer ET;                               // transfer between UIController 
 
 // GLOBALS
 mode currentMode = idle; // global machine mode
- // set up fake stories
-story stories[4] = {
-  {"The Wind in the Willows", "Kenneth Grahame", "Cousin Riley"},
-  {"Winnie the Pooh", "AA Milne", "Cousin Riley"},
-  {"The Cat in the Hat", "Dr Seuss", "Cousin Marlowe"},
-  {"Hairy MacLary", "Lyndley Dodd", "Auntie Cassie"}
-};
+
+// currently selected story
+STORY story;
+
+// command to send to soundcontroller
+SEND command;
 
 // play button pause mode flashing
 unsigned long previousFlashPollTime = 0;
@@ -64,17 +68,24 @@ int currentStoryIndex = 0;
 
 
 
+
+
 void setup()
 {
+  // set up LCD
+  lcd.begin(20, 4);
+  lcd.clear();
+  
   // enable LEDs for front buttons
   pinMode(PLAYLED, OUTPUT); // initially low (OFF)
   pinMode(STOPLED, OUTPUT); // initially low (OFF)
 
-  // set up LCD
-  lcd.begin(20, 4);
-
   // start machine in idle mode
   stopButtonPressed();
+
+  // start easytransfer connection with SoundController
+  Serial.begin(9600);
+  ET.begin(details(command), &Serial);
 }
 
 void loop()
@@ -103,30 +114,19 @@ void loop()
   }
 
   // poll encoder position
-  long newEncoderPos;
-  newEncoderPos = knob.read();
-  if (newEncoderPos != encoderPos) {
-    if(newEncoderPos > encoderPos)
-    {
-      currentStoryIndex++;
-    } else {
-      currentStoryIndex--;
-    }
-    if(currentStoryIndex < 0)
-    {
-      currentStoryIndex = 0;
-    }
-    if(currentStoryIndex > sizeof(stories)-1)
-    {
-      currentStoryIndex = sizeof(stories)-1;
-    }
-    encoderPos = newEncoderPos;
-    displayStory();
+  long change = encoderPos - knob.read();
+  
+  if (change < -1) {
+    sendCommand('f');
+  }
+  if(change > 1) {
+    sendCommand('r');
   }
 }
 
 void playPauseButtonPressed()
 {
+  sendCommand('p');
   switch(currentMode)
   {
     case play:
@@ -145,9 +145,14 @@ void playPauseButtonPressed()
 
 void stopButtonPressed()
 {
+  sendCommand('s');
   digitalWrite(STOPLED, HIGH);
   digitalWrite(PLAYLED, LOW);
   currentMode = idle;
+}
+
+void sendCommand(char action) {
+  
 }
 
 void displayStory()
@@ -161,6 +166,5 @@ void displayStory()
   lcd.print("read by");
   lcd.setCursor(0,3);
   lcd.print(stories[currentStoryIndex].reader);
-
 }
 

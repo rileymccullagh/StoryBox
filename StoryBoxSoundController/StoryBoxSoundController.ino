@@ -88,8 +88,8 @@ void setup() {
   AudioMemory(8);
   sgtl5000_1.enable();
   // this volume seems to not distort
-  sgtl5000_1.volume(0.6);
-  
+  sgtl5000_1.volume(0.5);
+    
   // start easytransfer connection with UIController
   Serial1.begin(9600);
   ET.begin(details(command), &Serial1);
